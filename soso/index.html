@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta >
+    <title>소소한 하루</title>
+    <style>
+        * {margin: 0; padding: 0;}
+        body, html { width: 100%; height: 100%; min-width: 100vw; min-height: 100vh; font-family: BlackHanSans;}
+        ul {list-style: none;}
+        a {text-decoration: none; color: black;}
+        img {border: 0; }
+        @font-face {
+            font-family: 'NanumPen';
+            src:url(./font/NanumPenScript-Regular.ttf);
+        }
+        @font-face {
+            font-family: "BlackHanSans";
+            src:url(./font/BlackHanSans-Regular.ttf)
+       
+            
+        }
+        .NanumP {font-family: NanumPen;}
+        .wrap { width: 100vw; height: 100vh; overflow: hidden;}
+        .tnb{width: 80%; height: 5%; margin: 0 auto;}
+        .tnb ul li a {display: block; width: 5%; height: 100%; text-align: center; float: right; font-size: 150%; min-width: 20%;}
+        .tnb ul li a:hover {background-color: cornflowerblue; color: white;}
+        .menubar { width: 100%; height: 7%;}
+        .menubar ul {width: 100%; height: 100%;}
+        .menubar ul li {float: left; width: 20%; text-align: center; height: 100%;}
+        .menubar ul li a {  line-height: 300%; display: block; font-size: 150%; width: 100%; height: 100%;}
+        .menu:hover{transform: rotateX(360deg); transition-duration: 0.5s; color: cornflowerblue;}
+        #logo {background-image: url(./img/logo.png); background-size: contain; display: block; width: 50%; margin-left: 25%;; height: 100%; background-repeat: no-repeat;}
+
+        .ban {width: 100%; height: 60%; margin-top: 5%;}
+        .ban img {width: 100%; height: 100%; float: left;  }
+
+        .ft {width: 100%; height: 27%; background-color: #333; margin-top: 1%; font-family: sans-serif; font-size: 80%;}
+        .ft ul {margin-left: 10%; padding-top: 1%;}
+        .ft ul li:first-child {width: 5%; display: inline-block; height: 5%; margin-top: 2%;}
+        .ft ul li:nth-child(2) {margin-top: 1%;}
+        .ft ul li {float: left; width: 70%; color: white; text-align: left; margin-left: 10%;}
+        .ft ul li a:first-child {color: cornflowerblue;}
+        .ft ul li a{color: white; margin-right: 10%; font-size: 110%; font-weight: 800;}
+        .ft ul li img { width: 100%; height: 100%;}
+        .ft ul li span {margin-right: 15%;}
+        #copyRight { color: #999;}
+    </style>
+    <script src="https://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+    <script>
+        // function bannerSlide(){
+        //     $(".ban").animate({"margin-left":"-100%"},4000)
+        //     $(".ban").animate({"margin-left":"-200%"},4000)
+        //     $(".ban").animate({"margin-left":"-300%"},4000)
+        //     $(".ban").animate({"margin-left":"-200%"},4000)
+        //     $(".ban").animate({"margin-left":"-100%"},4000)
+        //     $(".ban").animate({"margin-left":"0%"},4000,bannerSlide)
+        // }
+        
+        // $(document).ready(function(){
+        //     bannerSlide();
+        // })
+    </script>
+</head>
+<body>
+    <div class="wrap">
+        <nav class="tnb">
+            <ul>
+                <li><a href="">로그인</a></li>
+            </ul>
+        </nav>
+        <div class="menubar">
+            <ul>
+                <li><a href="index.html" id="logo"></a></li>
+                <li><a href="" class="menu sogae">소개</a></li>
+                <li><a href="" class="menu">메뉴</a></li>
+                <li><a href="" class="menu">오시는길</a></li>
+                <li><a href="" class="menu">예약문의</a></li>
+            </ul>
+        </div>
+        <div class="ban">
+            <img src="./img/ban1.jpg" alt="" id="ban1">
+        </div>
+        <footer class="ft">
+            <ul>
+                <li><img src="./img/logo_w.png" alt=""></li>
+                <li>
+                    <a href="">개인정보처리방침</a>
+                    <a href="">채용</a>
+                    <a href="">체인문의</a>
+                </li>
+                <br>
+                <li>
+                    <span>소소한하루</span><span>사업자등록번호 111-11-11111</span><span>대표 : OOO</span>
+                </li>
+                <br>
+                <li>
+                    <span>주소 : 서울 관악구 신림동길 29</span><span>연락처 : 0507-1485-8003</span>
+                </li>
+                <br>
+                <li><p id="copyRight">CopyRightⓒ 2020 YJS. ALL RIGHTS RESERVED</p></li>
+            </ul>
+        </footer>
+    </div>
+</body>
+</html>
