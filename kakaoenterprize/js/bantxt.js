@@ -28,15 +28,15 @@ $(document).ready(function() {
 			
 	
 			$(".anibox1").animate({"margin-left":"400px"},2000,function(){
-				$(".anibox1").css("opacity","0");
+				$(".anibox1").css({"opacity":"0","margin-left":"0px"});
 				if($(".anibox1").not(":animated")) { $(".anibox2").animate({"margin-left":"400px"},2000, function(){
-					$(".anibox2").css("opacity",0);
+					$(".anibox2").css({"opacity":"0","margin-left":"0px"});
 					if($(".anibox2").not(":animated")) { $(".anibox3").animate({"margin-left":"400px"},2000, function(){
-						$(".anibox3").css("opacity",0);
+						$(".anibox3").css({"opacity":"0","margin-left":"0px"});
 						if($(".anibox3").not(":animated")) { $(".anibox4").animate({"margin-left":"400px"}, 2000, function(){
-							$(".anibox4").css("opacity",0);
+							$(".anibox4").css({"opacity":"0","margin-left":"0px"});
 							if($(".anibox4").not(":animated")) { $(".anibox5").animate({"margin-left":"400px"},2000, function(){
-								$(".anibox5").css("opacity",0);
+								$(".anibox5").css({"opacity":"0","margin-left":"0px"}, function(ani());
 									}); }
 							}); }
 						}); }
