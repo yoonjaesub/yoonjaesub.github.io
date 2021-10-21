@@ -64,7 +64,14 @@
         $('#play').fadeOut(2000);
         audio.play();
     }
-
+    
+    /*추가된 부분: 종료되면 처음부터 다시 재생*/
+    audio.addEventListener('ended', function() { 
+        this.currentTime = 0;
+        this.play();
+    }, false);
+    
+    
     $('#help_btn').click(function(){
         if(confirm('유니코드를 한글로 변환하시겠습니까?')){
             var txt = $('#ascii').val();
