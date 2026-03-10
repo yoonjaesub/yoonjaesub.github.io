@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>동창회 좌석 랜덤 배치</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Malgun Gothic",sans-serif;
+  background:linear-gradient(180deg,#f8f6f2 0%,#f1efe9 100%);
+  color:#222;
+}
+.wrap{
+  max-width:1200px;
+  margin:0 auto;
+  padding:24px 18px 40px;
+}
+h1{
+  text-align:center;
+  margin:0 0 10px;
+  font-size:32px;
+}
+.desc{
+  text-align:center;
+  margin:0 0 22px;
+  color:#666;
+  font-size:14px;
+}
+.panel{
+  background:#fff;
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 10px 28px rgba(0,0,0,0.08);
+  margin-bottom:20px;
+}
+.layout-area{
+  position:relative;
+  height:640px;
+  overflow:hidden;
+  border-radius:16px;
+  background:
+    radial-gradient(circle at center, rgba(139,90,43,0.05) 0, rgba(139,90,43,0.05) 26%, transparent 27%),
+    linear-gradient(180deg,#fcfbf8 0%,#f7f3eb 100%);
+}
+.table-center{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:300px;
+  height:180px;
+  background:linear-gradient(180deg,#9b6a3b 0%, #7f5328 100%);
+  border-radius:20px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-weight:bold;
+  letter-spacing:1px;
+  box-shadow:0 14px 30px rgba(90,55,20,0.28);
+  z-index:1;
+}
+.table-center small{
+  display:block;
+  margin-top:6px;
+  font-size:12px;
+  opacity:0.85;
+  letter-spacing:0;
+}
+.seat{
+  position:absolute;
+  width:110px;
+  height:64px;
+  background:#fff;
+  border:2px solid #dfd7ca;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-weight:bold;
+  box-shadow:0 8px 18px rgba(0,0,0,0.10);
+  padding:8px;
+  transition:left .65s cubic-bezier(.22,1,.36,1), top .65s cubic-bezier(.22,1,.36,1), transform .25s ease, opacity .25s ease;
+  z-index:2;
+  word-break:break-word;
+  font-size:15px;
+}
+.seat:hover{
+  transform:scale(1.04);
+}
+.seat.flash{
+  animation:seatFlash .55s ease;
+}
+@keyframes seatFlash{
+  0%{transform:scale(0.92)}
+  55%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+.toolbar-left, .toolbar-right{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+}
+.count-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:90px;
+  height:40px;
+  padding:0 14px;
+  border-radius:12px;
+  background:#f4efe7;
+  color:#6a4a2a;
+  font-weight:bold;
+}
+.input-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:10px;
+  margin-top:15px;
+}
+.input-item{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.input-item label{
+  font-size:12px;
+  color:#666;
+  font-weight:bold;
+}
+.input-item input{
+  height:42px;
+  border:1px solid #d7d7d7;
+  border-radius:10px;
+  padding:0 10px;
+  font-size:14px;
+  background:#fff;
+}
+.input-item input:focus{
+  outline:none;
+  border-color:#9b6a3b;
+  box-shadow:0 0 0 4px rgba(155,106,59,0.12);
+}
+button{
+  border:none;
+  height:42px;
+  padding:0 16px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:14px;
+  transition:transform .15s ease, opacity .15s ease;
+}
+button:hover{transform:translateY(-1px)}
+.btn-primary{background:#7f5328;color:#fff}
+.btn-secondary{background:#ece8e1;color:#333}
+.btn-danger{background:#f4dfdf;color:#8d3333}
+.notice{
+  margin-top:14px;
+  font-size:13px;
+  color:#777;
+  line-height:1.6;
+}
+@media (max-width: 1024px){
+  .layout-area{height:560px}
+  .input-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .seat{width:102px;height:60px;font-size:14px}
+  .table-center{width:260px;height:160px}
+}
+@media (max-width: 768px){
+  .wrap{padding:16px 12px 28px}
+  h1{font-size:26px}
+  .panel{padding:16px}
+  .toolbar{align-items:stretch}
+  .toolbar-left,.toolbar-right{width:100%}
+  .toolbar-right button{flex:1}
+  .layout-area{height:520px}
+  .table-center{width:210px;height:132px;font-size:14px;padding:10px}
+  .seat{width:88px;height:54px;font-size:12px;border-radius:12px;padding:6px}
+  .input-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width: 420px){
+  .layout-area{height:500px}
+  .seat{width:80px;height:50px;font-size:11px}
+  .table-center{width:185px;height:120px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>동창회 좌석 랜덤 배치</h1>
+  <p class="desc">가운데 테이블을 기준으로 둘러앉는 형태입니다. 참석 인원 수에 맞게 입력을 추가하거나 줄일 수 있습니다.</p>
+
+  <div class="panel">
+    <div class="layout-area" id="layoutArea">
+      <div class="table-center">동창회 테이블<small>랜덤으로 자리 배치</small></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <div class="count-badge">인원 <span id="seatCountText" style="margin-left:6px;">17명</span></div>
+      </div>
+      <div class="toolbar-right">
+        <button class="btn-primary" id="shuffleBtn" type="button">랜덤 배치</button>
+        <button class="btn-secondary" id="applyBtn" type="button">현재 값 적용</button>
+        <button class="btn-secondary" id="addBtn" type="button">인원 추가</button>
+        <button class="btn-danger" id="removeBtn" type="button">마지막 인원 제거</button>
+        <button class="btn-secondary" id="resetBtn" type="button">초기화</button>
+      </div>
+    </div>
+
+    <div class="input-grid" id="inputGrid"></div>
+    <div class="notice">
+      기본값은 1부터 시작합니다. 이름 또는 번호를 자유롭게 입력할 수 있고, 인원이 적게 오면 마지막 인원 제거로 쉽게 줄일 수 있습니다.
+    </div>
+  </div>
+</div>
+
+<script>
+const maxSeatCount = 40;
+const defaultSeatCount = 17;
+let people = Array.from({length: defaultSeatCount}, (_, i) => String(i + 1));
+
+const inputGrid = document.getElementById('inputGrid');
+const layoutArea = document.getElementById('layoutArea');
+const seatCountText = document.getElementById('seatCountText');
+const shuffleBtn = document.getElementById('shuffleBtn');
+const applyBtn = document.getElementById('applyBtn');
+const addBtn = document.getElementById('addBtn');
+const removeBtn = document.getElementById('removeBtn');
+const resetBtn = document.getElementById('resetBtn');
+
+function updateCountText() {
+  seatCountText.textContent = `${people.length}명`;
+}
+
+function renderInputs() {
+  inputGrid.innerHTML = '';
+  people.forEach((value, index) => {
+    const item = document.createElement('div');
+    item.className = 'input-item';
+
+    const label = document.createElement('label');
+    label.setAttribute('for', `seatInput${index}`);
+    label.textContent = `참석자 ${index + 1}`;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = `seatInput${index}`;
+    input.value = value;
+    input.maxLength = 20;
+
+    item.appendChild(label);
+    item.appendChild(input);
+    inputGrid.appendChild(item);
+  });
+  updateCountText();
+}
+
+function getValuesFromInputs() {
+  return people.map((_, index) => {
+    const input = document.getElementById(`seatInput${index}`);
+    const value = input ? input.value.trim() : '';
+    return value || String(index + 1);
+  });
+}
+
+function shuffleArray(arr) {
+  const copied = [...arr];
+  for (let i = copied.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copied[i], copied[j]] = [copied[j], copied[i]];
+  }
+  return copied;
+}
+
+function getSeatSize() {
+  const w = window.innerWidth;
+  if (w <= 420) return {width: 80, height: 50};
+  if (w <= 768) return {width: 88, height: 54};
+  if (w <= 1024) return {width: 102, height: 60};
+  return {width: 110, height: 64};
+}
+
+function getRadii(count) {
+  const areaWidth = layoutArea.clientWidth;
+  const areaHeight = layoutArea.clientHeight;
+  const isMobile = window.innerWidth <= 768;
+
+  let radiusX = Math.max(120, areaWidth * (isMobile ? 0.34 : 0.39));
+  let radiusY = Math.max(110, areaHeight * (isMobile ? 0.28 : 0.31));
+
+  if (count >= 20) {
+    radiusX += isMobile ? 8 : 18;
+    radiusY += isMobile ? 12 : 18;
+  }
+  if (count >= 28) {
+    radiusX += isMobile ? 8 : 14;
+    radiusY += isMobile ? 6 : 10;
+  }
+
+  return { radiusX, radiusY };
+}
+
+function ensureSeatElements(count) {
+  const currentSeats = layoutArea.querySelectorAll('.seat');
+  if (currentSeats.length < count) {
+    for (let i = currentSeats.length; i < count; i++) {
+      const seat = document.createElement('div');
+      seat.className = 'seat';
+      seat.dataset.index = i;
+      layoutArea.appendChild(seat);
+    }
+  } else if (currentSeats.length > count) {
+    for (let i = currentSeats.length - 1; i >= count; i--) {
+      currentSeats[i].remove();
+    }
+  }
+}
+
+function renderSeats(values, animate = true) {
+  ensureSeatElements(values.length);
+  const seats = layoutArea.querySelectorAll('.seat');
+  const centerX = layoutArea.clientWidth / 2;
+  const centerY = layoutArea.clientHeight / 2;
+  const { width, height } = getSeatSize();
+  const { radiusX, radiusY } = getRadii(values.length);
+
+  values.forEach((value, index) => {
+    const angle = (-Math.PI / 2) + ((Math.PI * 2) / values.length) * index;
+    const x = centerX + radiusX * Math.cos(angle) - width / 2;
+    const y = centerY + radiusY * Math.sin(angle) - height / 2;
+
+    const seat = seats[index];
+    seat.textContent = value;
+    seat.style.left = `${x}px`;
+    seat.style.top = `${y}px`;
+
+    if (animate) {
+      seat.classList.remove('flash');
+      void seat.offsetWidth;
+      seat.classList.add('flash');
+    }
+  });
+}
+
+function applyCurrentInputs(withAnimation = false) {
+  people = getValuesFromInputs();
+  renderInputs();
+  renderSeats(people, withAnimation);
+}
+
+shuffleBtn.addEventListener('click', () => {
+  people = getValuesFromInputs();
+  people = shuffleArray(people);
+  renderInputs();
+  renderSeats(people, true);
+});
+
+applyBtn.addEventListener('click', () => {
+  applyCurrentInputs(false);
+});
+
+addBtn.addEventListener('click', () => {
+  people = getValuesFromInputs();
+  if (people.length >= maxSeatCount) {
+    alert(`최대 ${maxSeatCount}명까지 추가할 수 있습니다.`);
+    return;
+  }
+  people.push(String(people.length + 1));
+  renderInputs();
+  renderSeats(people, false);
+  const lastInput = document.getElementById(`seatInput${people.length - 1}`);
+  if (lastInput) lastInput.focus();
+});
+
+removeBtn.addEventListener('click', () => {
+  people = getValuesFromInputs();
+  if (people.length <= 1) {
+    alert('최소 1명은 있어야 합니다.');
+    return;
+  }
+  people.pop();
+  renderInputs();
+  renderSeats(people, false);
+});
+
+resetBtn.addEventListener('click', () => {
+  people = Array.from({length: defaultSeatCount}, (_, i) => String(i + 1));
+  renderInputs();
+  renderSeats(people, false);
+});
+
+window.addEventListener('resize', () => {
+  renderSeats(getValuesFromInputs(), false);
+});
+
+renderInputs();
+setTimeout(() => renderSeats(people, false), 60);
+</script>
+</body>
+</html>
